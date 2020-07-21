@@ -2,7 +2,7 @@
 //  ZIPFoundationDataSerializationTests.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017-2019 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2020 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -61,7 +61,7 @@ extension ZIPFoundationTests {
         XCTAssert(result == true)
         let fileSystemRepresentation = fileManager.fileSystemRepresentation(withPath: fileURL.path)
         let file: UnsafeMutablePointer<FILE> = fopen(fileSystemRepresentation, "rb")
-        // Close the file to exercice the error path during writeChunk that deals with
+        // Close the file to exercise the error path during writeChunk that deals with
         // unwritable files.
         fclose(file)
         do {

@@ -89,11 +89,19 @@ extension FileManager {
     ///   - progress: A progress object that can be used to track or cancel the unzip operation.
     ///   - preferredEncoding: Encoding for entry paths. Overrides the encoding specified in the archive.
     /// - Throws: Throws an error if the source item does not exist or the destination URL is not writable.
-    public func unzipItem(at sourceURL: URL, to destinationURL: URL, skipCRC32: Bool = false,
-                          progress: Progress? = nil, preferredEncoding: String.Encoding? = nil,
+<<<<<<< HEAD
+    public func unzipItem(at sourceURL: URL,
+                          to destinationURL: URL,
+                          progress: Progress? = nil,
+                          preferredEncoding: String.Encoding? = nil,
                           ignoreExistingFiles: Bool = false) throws {
+        guard self.fileExists(atPath: sourceURL.path) else {
+=======
+    public func unzipItem(at sourceURL: URL, to destinationURL: URL, skipCRC32: Bool = false,
+                          progress: Progress? = nil, preferredEncoding: String.Encoding? = nil) throws {
         let fileManager = FileManager()
         guard fileManager.itemExists(at: sourceURL) else {
+>>>>>>> development
             throw CocoaError(.fileReadNoSuchFile, userInfo: [NSFilePathErrorKey: sourceURL.path])
         }
         guard let archive = Archive(url: sourceURL, accessMode: .read, preferredEncoding: preferredEncoding) else {
@@ -138,6 +146,9 @@ extension FileManager {
     }
     
     // MARK: - Helpers
+<<<<<<< HEAD
+    
+=======
 
     func itemExists(at url: URL) -> Bool {
         // Use `URL.checkResourceIsReachable()` instead of `FileManager.fileExists()` here
@@ -149,6 +160,7 @@ extension FileManager {
         return (try? url.checkResourceIsReachable()) == true
     }
 
+>>>>>>> development
     func createParentDirectoryStructure(for url: URL) throws {
         let parentDirectoryURL = url.deletingLastPathComponent()
         try self.createDirectory(at: parentDirectoryURL, withIntermediateDirectories: true, attributes: nil)

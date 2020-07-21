@@ -2,7 +2,7 @@
 //  ZIPFoundationFileManagerTests.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017-2019 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2020 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -112,7 +112,7 @@ extension ZIPFoundationTests {
         var itemsExist = false
         for entry in archive {
             let directoryURL = destinationURL.appendingPathComponent(entry.path)
-            itemsExist = fileManager.fileExists(atPath: directoryURL.path)
+            itemsExist = fileManager.itemExists(at: directoryURL)
             if !itemsExist { break }
         }
         XCTAssert(itemsExist)
@@ -131,7 +131,7 @@ extension ZIPFoundationTests {
         var itemsExist = false
         for entry in archive {
             let directoryURL = destinationURL.appendingPathComponent(entry.path(using: encoding))
-            itemsExist = fileManager.fileExists(atPath: directoryURL.path)
+            itemsExist = fileManager.itemExists(at: directoryURL)
             if !itemsExist { break }
         }
         XCTAssert(itemsExist)
@@ -211,7 +211,7 @@ extension ZIPFoundationTests {
         guard let entry = Entry(centralDirectoryStructure: cds, localFileHeader: lfh, dataDescriptor: nil) else {
             XCTFail("Failed to create test entry."); return
         }
-        var attributes = FileManager.attributes(from: entry)
+        let attributes = FileManager.attributes(from: entry)
         guard let permissions = attributes[.posixPermissions] as? UInt16 else {
             XCTFail("Failed to read file attributes."); return
         }
