@@ -126,6 +126,10 @@ extension FileManager {
                 guard !FileManager().fileExists(atPath: destinationEntryURL.path) else {
                     continue
                 }
+            } else {
+                if FileManager().fileExists(atPath: destinationEntryURL.path) {
+                    try? FileManager().removeItem(at: destinationEntryURL)
+                }
             }
             if let progress = progress {
                 let entryProgress = archive.makeProgressForReading(entry)
