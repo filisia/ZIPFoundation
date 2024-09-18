@@ -93,7 +93,8 @@ extension FileManager {
     /// - Throws: Throws an error if the source item does not exist or the destination URL is not writable.
     public func unzipItem(at sourceURL: URL, to destinationURL: URL,
                           skipCRC32: Bool = false, allowUncontainedSymlinks: Bool = false,
-                          progress: Progress? = nil, pathEncoding: String.Encoding? = nil) throws {
+                          ignoreExistingFiles: Bool = false, progress: Progress? = nil,
+                          pathEncoding: String.Encoding? = nil) throws {
         let fileManager = FileManager()
         guard fileManager.itemExists(at: sourceURL) else {
             throw CocoaError(.fileReadNoSuchFile, userInfo: [NSFilePathErrorKey: sourceURL.path])
@@ -112,6 +113,18 @@ extension FileManager {
                 throw CocoaError(.fileReadInvalidFileName,
                                  userInfo: [NSFilePathErrorKey: entryURL.path])
             }
+            
+            // Apply ignoreExistingFiles logic
+            if ignoreExistingFiles {
+                guard !fileManager.fileExists(atPath: entryURL.path) else {
+                    continue
+                }
+            } else {
+                if fileManager.fileExists(atPath: entryURL.path) {
+                    try? fileManager.removeItem(at: entryURL)
+                }
+            }
+
             let crc32: CRC32
             if let progress = progress {
                 let entryProgress = archive.makeProgressForReading(entry)
@@ -132,6 +145,7 @@ extension FileManager {
             try verifyChecksumIfNecessary()
         }
     }
+
 
     // MARK: - Helpers
 
